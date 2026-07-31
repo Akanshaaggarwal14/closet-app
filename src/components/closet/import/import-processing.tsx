@@ -18,9 +18,9 @@ export function ImportProcessing({ current, total }: ImportProcessingProps) {
         <Sparkles className="h-8 w-8 text-primary" />
       </motion.div>
       <div>
-        <p className="font-medium">Removing backgrounds…</p>
+        <p className="font-medium">Analyzing your photos…</p>
         <p className="text-sm text-muted-foreground">
-          Processing your photos locally in the browser
+          Detecting and isolating clothing items locally
           {total > 1 ? ` (${current}/${total})` : ""}
         </p>
       </div>

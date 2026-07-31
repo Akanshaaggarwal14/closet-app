@@ -1,8 +1,10 @@
-# Closet App 👗✨
+# Styloé 👗✨
+
+*Your intelligent wardrobe companion*
 
 A modern digital wardrobe assistant that helps users organize their clothes, plan outfits, and make smarter styling decisions based on their wardrobe, occasions, and weather.
 
-Closet App transforms a physical wardrobe into a personalized digital closet where users can manage clothing items, create outfits, schedule looks, and prepare for different situations effortlessly.
+Styloé transforms a physical wardrobe into a personalized digital closet where users can manage clothing items, create outfits, schedule looks, and prepare for different situations effortlessly.
 
 ---
 
@@ -16,7 +18,7 @@ People often own many clothes but still struggle with:
 * Choosing clothes according to weather
 * Organizing their clothing collection
 
-Closet App solves this by creating a digital version of the user's wardrobe and providing tools to organize, plan, and style outfits.
+Styloé solves this by creating a digital version of the user's wardrobe and providing tools to organize, plan, and style outfits.
 
 ---
 
@@ -101,7 +103,7 @@ Useful for:
 
 ## 🌦 Weather-Based Wardrobe
 
-Closet App uses weather information to make wardrobe browsing more relevant.
+Styloé uses weather information to make wardrobe browsing more relevant.
 
 Technology:
 
@@ -270,7 +272,7 @@ closet-app/
 
 # Why This Project?
 
-Closet App explores the intersection of:
+Styloé explores the intersection of:
 
 * Artificial Intelligence
 * Fashion Technology
@@ -324,7 +326,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
 # Future Goal
 
-Closet App aims to become a personal AI fashion assistant that understands:
+Styloé aims to become a personal AI fashion assistant that understands:
 
 * User wardrobe
 * Weather
