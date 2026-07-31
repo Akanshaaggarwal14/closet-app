@@ -1,0 +1,1 @@
+Versioned SQL migrations (schema, RLS policies) — first migration added when we set up Supabase.
