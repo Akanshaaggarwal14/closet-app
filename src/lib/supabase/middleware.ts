@@ -46,8 +46,15 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/forgot-password") ||
     request.nextUrl.pathname.startsWith("/auth/confirm");
 
-  const isProtectedRoute =
-    !isAuthRoute && request.nextUrl.pathname !== "/";
+  const isRoot = request.nextUrl.pathname === "/";
+
+  if (isRoot) {
+    const url = request.nextUrl.clone();
+    url.pathname = user ? "/dashboard" : "/login";
+    return NextResponse.redirect(url);
+  }
+
+  const isProtectedRoute = !isAuthRoute;
 
   if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone();

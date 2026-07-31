@@ -15,16 +15,23 @@ interface ClothingCardProps {
 
 export function ClothingCard({ item, onClick, onToggleFavorite }: ClothingCardProps) {
   return (
-    <motion.button
-      type="button"
+    <motion.div
+      role="button"
+      tabIndex={0}
       onClick={onClick}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onClick();
+        }
+      }}
       layout
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-card text-left shadow-sm transition-shadow hover:shadow-lg"
+      className="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-border/60 bg-card text-left shadow-sm transition-shadow hover:shadow-lg"
     >
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
         <Image
@@ -65,6 +72,6 @@ export function ClothingCard({ item, onClick, onToggleFavorite }: ClothingCardPr
           <Badge variant="outline">{item.occasion}</Badge>
         </div>
       </div>
-    </motion.button>
+    </motion.div>
   );
 }
