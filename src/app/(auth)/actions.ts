@@ -34,7 +34,11 @@ export async function signUp(values: SignupInput) {
     return { error: error.message };
   }
 
-  redirect("/login?message=Check your email to confirm your account");
+  // Simple signup, no email confirmation step — requires "Confirm email"
+  // to be turned off in Supabase (Authentication -> Providers -> Email),
+  // otherwise signUp() won't return an active session and this redirect
+  // will just bounce back to /login via middleware.
+  redirect("/dashboard");
 }
 
 export async function signIn(values: LoginInput) {
