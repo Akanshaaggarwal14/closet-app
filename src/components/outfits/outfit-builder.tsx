@@ -61,7 +61,13 @@ export function OutfitBuilder({
     }
   }, [open, editingOutfit, reset]);
 
-  const filteredClothingItems = clothingItems.filter((item) =>
+  // Items currently in laundry can't be put into a new outfit — they're
+  // excluded from the picker entirely rather than shown disabled, per the
+  // Laundry Management spec (Outfit Studio must not allow selecting them).
+  const availableClothingItems = clothingItems.filter((item) => !item.isInLaundry);
+  const inLaundryCount = clothingItems.length - availableClothingItems.length;
+
+  const filteredClothingItems = availableClothingItems.filter((item) =>
     item.name.toLowerCase().includes(search.trim().toLowerCase()),
   );
 
@@ -119,6 +125,12 @@ export function OutfitBuilder({
                 className="pl-9"
               />
             </div>
+            {inLaundryCount > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {inLaundryCount} {inLaundryCount === 1 ? "item is" : "items are"} in laundry and
+                hidden here.
+              </p>
+            )}
             <div className="grid max-h-72 grid-cols-3 gap-2 overflow-y-auto rounded-lg border border-border p-2 sm:grid-cols-4">
               {filteredClothingItems.length === 0 && (
                 <p className="col-span-full py-6 text-center text-sm text-muted-foreground">

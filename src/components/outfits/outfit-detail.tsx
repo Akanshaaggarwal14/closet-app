@@ -15,6 +15,8 @@ interface OutfitDetailProps {
 }
 
 export function OutfitDetail({ outfit, onClose, onEdit, onDelete }: OutfitDetailProps) {
+  const unavailableCount = outfit?.items.filter((item) => item.isInLaundry).length ?? 0;
+
   return (
     <Modal open={!!outfit} onClose={onClose} variant="center" className="max-w-xl">
       {outfit && (
@@ -24,6 +26,12 @@ export function OutfitDetail({ outfit, onClose, onEdit, onDelete }: OutfitDetail
             <p className="text-sm text-muted-foreground">
               {outfit.items.length} {outfit.items.length === 1 ? "item" : "items"}
             </p>
+            {unavailableCount > 0 && (
+              <p className="text-sm text-amber-600">
+                {unavailableCount} {unavailableCount === 1 ? "item" : "items"} currently
+                unavailable.
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">

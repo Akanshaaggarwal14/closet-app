@@ -55,7 +55,7 @@ export function SplashScreen({ onFinished }: SplashScreenProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: stage === "tagline" || stage === "dots" ? 1 : 0 }}
             transition={{ duration: TAGLINE_FADE_DURATION }}
-            className="text-sm text-muted-foreground"
+            className="max-w-xs px-6 text-center text-sm text-muted-foreground"
           >
             {TAGLINE}
           </motion.p>

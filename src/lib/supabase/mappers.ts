@@ -18,6 +18,11 @@ export function mapClothingItemRow(row: any): ClothingItem {
     imageUrl: row.image_url,
     imagePath: row.image_path,
     isFavorite: row.is_favorite,
+    isInLaundry: row.is_in_laundry,
+    lastWorn: row.last_worn,
+    lastWashed: row.last_washed,
+    wearCount: row.wear_count,
+    laundrySince: row.laundry_since,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };

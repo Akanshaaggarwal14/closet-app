@@ -38,6 +38,9 @@ export function useScheduledOutfits(
             userId: outfit.userId,
             date,
             outfit,
+            // A newly assigned/reassigned outfit is always unprocessed —
+            // the laundry reminder only cares about past, unreviewed days.
+            laundryProcessed: existing?.laundryProcessed ?? false,
             createdAt: existing?.createdAt ?? new Date().toISOString(),
             updatedAt: new Date().toISOString(),
           },

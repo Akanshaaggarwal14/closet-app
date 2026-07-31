@@ -27,7 +27,7 @@ export function ClothingCard({ item, onClick, onToggleFavorite }: ClothingCardPr
       }}
       layout
       initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{ opacity: item.isInLaundry ? 0.6 : 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
@@ -41,6 +41,11 @@ export function ClothingCard({ item, onClick, onToggleFavorite }: ClothingCardPr
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
+        {item.isInLaundry && (
+          <Badge className="absolute left-3 top-3 bg-background/90 text-foreground backdrop-blur-sm">
+            In Laundry
+          </Badge>
+        )}
         <button
           type="button"
           onClick={(event) => {

@@ -6,10 +6,13 @@ import { WeatherCard } from "@/components/dashboard/weather-card";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { TotalItemsCard } from "@/components/dashboard/total-items-card";
 import { TodayOutfitCard } from "@/components/dashboard/today-outfit-card";
+import { LaundryCard } from "@/components/dashboard/laundry-card";
+import { LaundryReminderModal } from "@/components/dashboard/laundry-reminder-modal";
 import {
   UpcomingOutfitsCard,
   type UpcomingEntry,
 } from "@/components/dashboard/upcoming-outfits-card";
+import type { LaundryReminderEntry } from "@/types";
 
 const OUTFIT_JOIN = "id, user_id, name, created_at, updated_at, outfit_items(position, clothing_items(*))";
 
@@ -22,7 +25,14 @@ export default async function DashboardPage() {
   const today = todayDateKey();
   const upcomingEnd = addDaysToDateKey(today, 6);
 
-  const [profileResult, countResult, todayResult, upcomingResult] = await Promise.all([
+  const [
+    profileResult,
+    countResult,
+    todayResult,
+    upcomingResult,
+    laundryCountResult,
+    laundryReminderResult,
+  ] = await Promise.all([
     supabase.from("profiles").select("full_name").eq("id", user!.id).single(),
     supabase.from("clothing_items").select("id", { count: "exact", head: true }),
     supabase
@@ -35,6 +45,16 @@ export default async function DashboardPage() {
       .select(`id, date, outfits(${OUTFIT_JOIN})`)
       .gt("date", today)
       .lte("date", upcomingEnd)
+      .order("date", { ascending: true }),
+    supabase
+      .from("clothing_items")
+      .select("id", { count: "exact", head: true })
+      .eq("is_in_laundry", true),
+    supabase
+      .from("scheduled_outfits")
+      .select(`id, date, outfits(${OUTFIT_JOIN})`)
+      .lt("date", today)
+      .eq("laundry_processed", false)
       .order("date", { ascending: true }),
   ]);
 
@@ -49,9 +69,20 @@ export default async function DashboardPage() {
       outfit: mapOutfitRow(row.outfits),
     }));
 
+  const laundryCount = laundryCountResult.count ?? 0;
+  const laundryQueue: LaundryReminderEntry[] = (laundryReminderResult.data ?? [])
+    .filter((row) => row.outfits)
+    .map((row) => ({
+      id: row.id,
+      date: row.date,
+      outfit: mapOutfitRow(row.outfits),
+    }));
+
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6 p-6 sm:p-8">
       <Greeting name={fullName} />
+
+      <LaundryReminderModal initialQueue={laundryQueue} />
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <div className="md:col-span-2">
@@ -66,6 +97,8 @@ export default async function DashboardPage() {
         <TodayOutfitCard outfit={todayOutfit} />
         <UpcomingOutfitsCard items={upcoming} />
       </div>
+
+      <LaundryCard count={laundryCount} />
     </div>
   );
 }

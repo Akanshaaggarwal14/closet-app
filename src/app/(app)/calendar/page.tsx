@@ -11,7 +11,7 @@ export default async function CalendarPage() {
   const [scheduledResult, outfitsResult] = await Promise.all([
     supabase
       .from("scheduled_outfits")
-      .select(`id, user_id, date, created_at, updated_at, outfits(${OUTFIT_JOIN})`)
+      .select(`id, user_id, date, laundry_processed, created_at, updated_at, outfits(${OUTFIT_JOIN})`)
       .order("date", { ascending: true }),
     supabase
       .from("outfits")
@@ -36,6 +36,7 @@ export default async function CalendarPage() {
       userId: row.user_id,
       date: row.date,
       outfit: mapOutfitRow(row.outfits),
+      laundryProcessed: row.laundry_processed,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
     }));

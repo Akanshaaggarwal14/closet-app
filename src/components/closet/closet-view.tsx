@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Plus, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ClosetFilters } from "@/components/closet/closet-filters";
@@ -9,12 +10,23 @@ import { ClothingGrid } from "@/components/closet/clothing-grid";
 import { ClothingForm } from "@/components/closet/clothing-form";
 import { ClothingDetail } from "@/components/closet/clothing-detail";
 import { DeleteConfirm } from "@/components/closet/delete-confirm";
-import { ImportWardrobeModal } from "@/components/closet/import/import-wardrobe-modal";
 import { useClosetStore } from "@/stores/closet-store";
 import { useClothingItems } from "@/hooks/useClothingItems";
 import { useWeather } from "@/hooks/useWeather";
 import { getApproximateSeason, seasonsForWeather } from "@/lib/utils/season";
 import type { ClothingItem } from "@/types";
+
+// Code-split out of the main Closet bundle: this modal (and the
+// useWardrobeImport hook it renders) pulls in @imgly/background-removal,
+// a sizeable WASM-based library that most page loads never touch. Loading
+// it as a separate chunk keeps the initial Closet page bundle lighter.
+const ImportWardrobeModal = dynamic(
+  () =>
+    import("@/components/closet/import/import-wardrobe-modal").then(
+      (mod) => mod.ImportWardrobeModal,
+    ),
+  { ssr: false },
+);
 
 interface ClosetViewProps {
   initialItems: ClothingItem[];
@@ -71,14 +83,14 @@ export function ClosetView({ initialItems }: ClosetViewProps) {
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6 p-6 sm:p-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Closet</h1>
           <p className="text-sm text-muted-foreground">
             {items.length} {items.length === 1 ? "item" : "items"}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button variant="outline" onClick={() => setIsImportOpen(true)}>
             <Sparkles className="h-4 w-4" />
             Import Wardrobe

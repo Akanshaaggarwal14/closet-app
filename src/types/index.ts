@@ -37,6 +37,12 @@ export interface ClothingItem {
   imageUrl: string;
   imagePath: string;
   isFavorite: boolean;
+  // Laundry Management fields — see supabase/migrations/0006_laundry.sql.
+  isInLaundry: boolean;
+  lastWorn: string | null;
+  lastWashed: string | null;
+  wearCount: number;
+  laundrySince: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -60,8 +66,18 @@ export interface ScheduledOutfit {
   // Full outfit (with its items) via join, so the calendar can show a
   // thumbnail without a second round trip per day.
   outfit: Outfit;
+  // Whether the user has already been asked (and responded) about moving
+  // this day's outfit to laundry. See supabase/migrations/0006_laundry.sql.
+  laundryProcessed: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+/** One entry in the laundry reminder queue shown on the Dashboard. */
+export interface LaundryReminderEntry {
+  id: string; // scheduled_outfits.id
+  date: string; // ISO date (YYYY-MM-DD) — the day the outfit was worn
+  outfit: Outfit;
 }
 
 export interface Profile {

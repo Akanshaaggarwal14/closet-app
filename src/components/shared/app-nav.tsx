@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarDays, LayoutDashboard, LogOut, Shirt, Sparkles, User } from "lucide-react";
+import {
+  CalendarDays,
+  LayoutDashboard,
+  LogOut,
+  Shirt,
+  Sparkles,
+  User,
+  WashingMachine,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { signOut } from "@/app/(auth)/actions";
 
@@ -11,6 +19,7 @@ const NAV_LINKS = [
   { href: "/closet", label: "Closet", icon: Shirt },
   { href: "/outfits", label: "Outfit Studio", icon: Sparkles },
   { href: "/calendar", label: "Calendar", icon: CalendarDays },
+  { href: "/laundry", label: "Laundry", icon: WashingMachine },
   { href: "/profile", label: "Profile", icon: User },
 ];
 
@@ -31,6 +40,7 @@ export function AppNav() {
               <Link
                 key={href}
                 href={href}
+                aria-current={active ? "page" : undefined}
                 className={cn(
                   "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-colors",
                   active
@@ -48,7 +58,8 @@ export function AppNav() {
         <button
           type="button"
           onClick={() => signOut()}
-          className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          aria-label="Sign out"
+          className="flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:min-h-0 sm:min-w-0 sm:justify-start"
         >
           <LogOut className="h-4 w-4" />
           <span className="hidden sm:inline">Sign out</span>
@@ -62,8 +73,9 @@ export function AppNav() {
             <Link
               key={href}
               href={href}
+              aria-current={active ? "page" : undefined}
               className={cn(
-                "flex flex-col items-center gap-0.5 px-2 text-xs",
+                "flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 px-2 py-2 text-xs",
                 active ? "text-primary" : "text-muted-foreground",
               )}
             >
